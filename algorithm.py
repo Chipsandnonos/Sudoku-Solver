@@ -61,7 +61,7 @@ def solve (original_board, possibility_board, truth_board, x,y):
             y = y + 1
         else:
             x = x + 1
-    print(x,y)
+    
     # Finds the cache of possibilities for the iteration of the function
     cache = []
     for i in range(len(root_possibility_board[y][x])):
