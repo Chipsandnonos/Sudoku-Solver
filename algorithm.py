@@ -61,7 +61,7 @@ def solve (original_board, possibility_board, truth_board, x,y):
             y = y + 1
         else:
             x = x + 1
-
+    print(x,y)
     # Finds the cache of possibilities for the iteration of the function
     cache = []
     for i in range(len(root_possibility_board[y][x])):
@@ -106,41 +106,44 @@ def solve (original_board, possibility_board, truth_board, x,y):
         if (succeeded == True):
            return True
         else:
+            reroll = True
             transfer_board = copy2dlist(root_board) #Resetting the possibility and game board to the starting point so a new branch can be tried
             updated_possibility_board = copy3dlist(root_possibility_board)
             valid_guess = False
+
             while (valid_guess != True):
 
-                if (len(cache) != 1):
-                    cache.pop(0)
-                    transfer_board[y][x] = cache[0]
-                else:
-                    return False
-                valid_guess = ispossible(transfer_board,x,y)
+                if (reroll == True):
+                    if (len(cache) != 1):
+                        cache.pop(0)
+                        transfer_board[y][x] = cache[0]
+                        reroll = False
+                    else:
+                        return False
+                valid_guess = ispossible(transfer_board, x, y)
 
                 if (valid_guess == True):
                     updated_possibility_board = update_p_board(transfer_board, root_possibility_board, x, y)
                     impossible = isimpossible(updated_possibility_board, truth_board)
                     if (impossible == True):
                         valid_guess = False
-                        if (len(cache) != 1):
-                            cache.pop(0)
-                            transfer_board[y][x] = cache[0]
-                        else:
-                            return False
+                        reroll = True
+
+                else:
+                    reroll == True
 
 
 
 def run(): #Change this board to what you would like to solve
-    b = [[None, 8, None, None, None, None, 2, None, None],
-             [None, None, None, None, 8, 4, None, 9, None],
-             [None, None, 6, 3, 2, None, None, 1, None],
-             [None, 9, 7, None, None, None, None, 8, None],
-             [8, None, None, 9, None, 3, None, None, 2],
-             [None, 1, None, None, None, None, 9, 5, None],
-             [None, 7, None, None, 4, 5, 8, None, None],
-             [None, 3, None, 7, 1, None, None, None, None],
-             [None, None, 8, None, None, None, None, 4, None]
+    b =      [[5, 3, None, None, 7, None, None, None, None],
+             [6, None, None, 1, 9, 5, None, None, None],
+             [None, 9, 8, None, None, None, None, 6, None],
+             [8, None, None, None, 6, None, None, None, 3],
+             [4, None, None, 8, None, 3, None, None, 1],
+             [7, None, None, None, 2, None, None, None, 6],
+             [None, 6, None, None, None, None, 2, 8, None],
+             [None, None, None, 4, 1, 9, None, None, 5],
+             [None, None, None, None, 8, None, None, 7, 9]
              ]
 
     p, t = predboard(b)
